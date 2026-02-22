@@ -31,14 +31,15 @@ def get_video_info(url: str) -> dict:
         "no_warnings": True,
         "extract_flat": False,
         "enable_remote_components": ["ejs:github"],
+        "cookiesfrombrowser": ("chrome",),
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
         return {
-            "title": info.get("title", "Unknown"),
-            "duration": info.get("duration", 0),
+            "title": info.get("title") or "Unknown",
+            "duration": info.get("duration") or 0,
             "thumbnail": info.get("thumbnail"),
-            "uploader": info.get("uploader", "Unknown"),
+            "uploader": info.get("uploader") or "Unknown",
         }
 
 
@@ -72,6 +73,7 @@ def download_video(
         "no_warnings": True,
         "merge_output_format": "mp4",
         "enable_remote_components": ["ejs:github"],
+        "cookiesfrombrowser": ("chrome",),
         "postprocessor_args": {
             "Merger": ["-movflags", "+faststart"],
         },
@@ -116,6 +118,7 @@ def download_audio(
         "quiet": True,
         "no_warnings": True,
         "enable_remote_components": ["ejs:github"],
+        "cookiesfrombrowser": ("chrome",),
         "postprocessors": [{
             "key": "FFmpegExtractAudio",
             "preferredcodec": "mp3",
